@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load crispy_forms_filters %}
+
+
+{% block title %}Share a post{% endblock %}
+
+{% block content %}
+
+    <div style="" class="col-sm-12">
+      <div class="jumbotron">
+      {% if sent %}
+          <h4>Article "{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.</h4>
+          <hr>
+      {% else %}
+        <h1>Share via email</h1>
+        <form class="form-group" action="." method="post">
+            {{ form|crispy }}
+            {% csrf_token %}
+            {% buttons submit='Send' %}{% endbuttons %}
+        </form>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

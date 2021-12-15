@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Статьи{% endblock %}
+{% block content %}
+
+    <div style="border-right: 1px solid dodgerblue" class="col-sm-9">
+      <h1>List of articles</h1>
+    <div>
+        {% for post in posts %}
+            <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+            <p>
+            Тэги:
+                {% for tag in post.tags.all %}
+                    <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                        {{ tag.name }}
+                    </a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p class="my-date">Date of publication: {{ post.publish }}</p>
+            <hr style="background: dodgerblue">
+        {% endfor %}
+    {% include 'paginator.html' with page=posts %}
+{#    {% include 'paginator.html' with page=page_obj %}#}
+    </div>
+    <hr style="background: dodgerblue">
+    <h5><a href="{% url 'blog:post_feed' %}">Subscribe to RSS</a></h5>
+  </div>
+
+    <div class="col-sm-3">
+      <h4 style="text-align: center">New ones</h4>
+    <hr>
+  <ul>
+      {% for post in post_new_list %}
+          <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+      {% endfor %}
+  </ul>
+    <hr>
+    <h5 style="text-align: center"><a href="{% url 'blog:post_feed' %}">Subscribe to RSS</a></h5>
+  </div>
+
+{% endblock %}

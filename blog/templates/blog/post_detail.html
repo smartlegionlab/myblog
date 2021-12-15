@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load crispy_forms_filters %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+
+  <div style="border-right: 1px solid dodgerblue" class="col-sm-9">
+      <h4>{{ post.title }}</h4>
+  <hr>
+  <p>{{ post.body|safe }}</p>
+  <hr>
+  <p><a href="{% url 'blog:post_share' post.id %}">Send by e-mail</a></p>
+  <hr>
+      {% with comments.count as total_comment %}
+  <p>Comments {{ total_comment }}</p>
+  {% endwith %}
+  <hr>
+  {% for comment in comments %}
+      {{ comment.body|safe }}
+      <br>
+        Comment {{ forloop.counter }} by {{ comment.name }}
+           <hr>
+      {{ comment.created }}
+  {% empty %}
+      <p>No comments</p>
+  {% endfor %}
+  {% if new_comment %}
+    <p>Your comment has been added</p>
+  {% else %}
+      <h4>Add a comment</h4>
+      <form action="." method="post">
+        {{ comment_form|crispy }}
+        {% csrf_token %}
+      {% buttons submit='Send' %}{% endbuttons %}
+      </form>
+  {% endif %}
+  </div>
+
+  <div style="" class="col-sm-3">
+      <h4>Recommended</h4>
+      <hr>
+      <ul>
+      {% for post in similar_posts %}
+          <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+      {% endfor %}
+  </ul>
+      <h4 style="text-align: center">New ones</h4>
+      <hr>
+  <ul>
+      {% for post in post_new_list %}
+          <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+      {% endfor %}
+  </ul>
+  </div>
+
+{% endblock %}
