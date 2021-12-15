@@ -43,7 +43,7 @@ ___myblog v0.1.0___
 
 ## Description:
 
-___Django Blog___ -  Simple Django blog with API.
+___My Blog___ -  Django blog with API.
 
 - The blog design is used as an example only.
 - You should use Postgresql for search to work.
